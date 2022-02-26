@@ -21,7 +21,7 @@ class EventBus {
 	public function publishEvent<T:IEvent>(event:T) {
 		var type = Type.getClassName(Type.getClass(event));
 		if (!listeners.exists(type)) {
-			console.log("Publishing event with no listeners");
+			console.log('Publishing event with no listeners: $type');
 			return;
 		}
 

@@ -1,5 +1,7 @@
 package ecs.system;
 
+import ecs.event.CollisionEvent;
+import ecs.system.IAllEntitySystem.IAllEntitySystems;
 import ecs.component.Collidable;
 import ecs.component.Transform;
 

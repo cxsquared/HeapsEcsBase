@@ -4,9 +4,13 @@ import h2d.Drawable;
 import h2d.Console;
 
 class Renderable implements IComponent {
-	public var drawable(default, null):Drawable;
+	public var drawable:Drawable;
+	public var offsetX:Float;
+	public var offsetY:Float;
 
-	public function new(drawable:Drawable) {
+	// TODO: Maybe pass in a parent so that anims can get added correctly
+	// if we pass in null
+	public function new(?drawable:Drawable) {
 		this.drawable = drawable;
 	}
 
@@ -14,7 +18,13 @@ class Renderable implements IComponent {
 		console.log(' tile: ${drawable.name}', color);
 	}
 
+	public function debugText():String {
+		return '[Renderable]';
+	}
+
 	public function remove() {
-		this.drawable.remove();
+		if (drawable != null) {
+			drawable.remove();
+		}
 	}
 }

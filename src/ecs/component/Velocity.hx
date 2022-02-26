@@ -1,5 +1,6 @@
 package ecs.component;
 
+import ecs.utils.MathUtils;
 import h2d.Console;
 
 class Velocity implements IComponent {
@@ -16,6 +17,10 @@ class Velocity implements IComponent {
 	public function log(console:Console, ?color:Null<Int>):Void {
 		console.log('dx: $dx', color);
 		console.log('dy: $dy', color);
+	}
+
+	public function debugText():String {
+		return '[Velocity] dx: ${MathUtils.floatToStringPrecision(dx, 2)}, dy: ${MathUtils.floatToStringPrecision(dy, 2)}';
 	}
 
 	public function remove() {}

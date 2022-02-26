@@ -42,6 +42,16 @@ class World {
 		return entities;
 	}
 
+	public function getEntityByName(name:String):Entity {
+		for (entitiy in entities) {
+			if (entitiy.name == name) {
+				return entitiy;
+			}
+		}
+
+		return null;
+	}
+
 	public function getComponent<T:IComponent>(entity:Entity, component:Class<T>):Null<T> {
 		var className = Type.getClassName(component);
 		if (!components.exists(className))
@@ -51,6 +61,16 @@ class World {
 			return null;
 
 		return cast components[className][entity.id];
+	}
+
+	public function getAllComponentsForEntity(entity:Entity):Array<IComponent> {
+		var components = new Array<IComponent>();
+		for (component in this.components.keys()) {
+			if (this.components[component].exists(entity.id))
+				components.push(this.components[component][entity.id]);
+		}
+
+		return components;
 	}
 
 	public function hasComponent<T:IComponent>(entity:Entity, component:Class<T>):Bool {
@@ -68,6 +88,19 @@ class World {
 		}
 
 		components[componentType][entityId] = component;
+	}
+
+	public function removeComponent<T:IComponent>(entityId:Int, component:Class<T>) {
+		var className = Type.getClassName(component);
+		if (!components.exists(className))
+			return;
+
+		if (!components[className].exists(entityId))
+			return;
+
+		var component = components[className][entityId];
+		components[className].remove(entityId);
+		component.remove();
 	}
 
 	public function update(dt:Float) {
@@ -96,6 +129,7 @@ class World {
 		for (entity in entities) {
 			var color = Std.int(Math.random() * 0xFFFFFF);
 			console.log('id: ${entity.id}', color);
+			console.log('name: ${entity.name}', color);
 			console.log("components: ", color);
 			for (type in components.keys()) {
 				if (components[type].exists(entity.id)) {

@@ -1,4 +1,4 @@
 common.hxml
 
--lib hlsdl
+-lib hldx 
 -hl bin/hl/hello.hl

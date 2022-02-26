@@ -1,5 +1,6 @@
 package ecs.ui;
 
+import h2d.Object;
 import ecs.tools.WorldEditor.EntityField;
 
 @:uiComp("view")
@@ -15,7 +16,7 @@ class ViewComp extends h2d.Flow implements h2d.domkit.Object {
         }
 	</view>;
 
-	public function new(align:h2d.Flow.FlowAlign, entityFields:Array<EntityField>, ?parent) {
+	public function new(align:h2d.Flow.FlowAlign, entityFields:Array<EntityField>, ?parent:Object) {
 		super(parent);
         this.overflow = Scroll;
 		initComponent();

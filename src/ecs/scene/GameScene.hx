@@ -4,7 +4,7 @@ import h2d.Console;
 import h2d.Scene;
 
 class GameScene extends h2d.Object {
-	var console:Console;
+	public var console:Console;
 
 	public function new(heapsScene:Scene, console:Console) {
 		super(heapsScene);

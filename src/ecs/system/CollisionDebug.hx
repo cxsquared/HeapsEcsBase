@@ -1,5 +1,8 @@
 package ecs.system;
 
+import h2d.col.Point;
+import ecs.utils.CameraUtils;
+import ecs.system.IAllEntitySystem.IAllEntitySystems;
 import ecs.component.Camera;
 import hxsl.Cache;
 import ecs.component.Transform;
@@ -44,12 +47,12 @@ class CollisionDebug implements IAllEntitySystems {
 				switch (collidable.shape) {
 					case CIRCLE:
 						var circle = collidable.circle;
-						var point = CameraUtils.worldToScreen(new Transform(circle.x, circle.y), camera, cameraTransform);
+						var point = CameraUtils.worldToScreen(new Point(circle.x, circle.y), camera, new Point(cameraTransform.x, cameraTransform.y));
 						graphics.drawCircle(point.x, point.y, circle.ray);
 
 					case BOUNDS:
 						var bounds = collidable.bounds;
-						var point = CameraUtils.worldToScreen(new Transform(bounds.x, bounds.y), camera, cameraTransform);
+						var point = CameraUtils.worldToScreen(new Point(bounds.x, bounds.y), camera, new Point(cameraTransform.x, cameraTransform.y));
 						graphics.drawRect(point.x, point.y, bounds.width, bounds.height);
 				}
 			}
