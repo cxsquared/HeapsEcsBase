@@ -128,15 +128,7 @@ class World {
 		console.log("Entities:");
 		for (entity in entities) {
 			var color = Std.int(Math.random() * 0xFFFFFF);
-			console.log('id: ${entity.id}', color);
-			console.log('name: ${entity.name}', color);
-			console.log("components: ", color);
-			for (type in components.keys()) {
-				if (components[type].exists(entity.id)) {
-					console.log('type: $type', color);
-					components[type][entity.id].log(console, color);
-				}
-			}
+			logEntity(entity, console, color);
 		}
 	}
 
@@ -146,13 +138,17 @@ class World {
 				continue;
 
 			var color = Std.int(Math.random() * 0xFFFFFF);
-			console.log('id: ${entity.id}', color);
-			console.log("components: ", color);
-			for (type in components.keys()) {
-				if (components[type].exists(entity.id)) {
-					console.log('type: $type', color);
-					components[type][entity.id].log(console, color);
-				}
+			logEntity(entity, console, color);
+		}
+	}
+
+	function logEntity(entity:Entity, console:Console, color:UInt) {
+		console.log('id: ${entity.id}', color);
+		console.log('name: ${entity.name}', color);
+		console.log("components: ", color);
+		for (type in components.keys()) {
+			if (components[type].exists(entity.id)) {
+				console.log(components[type][entity.id].debugText(), color);
 			}
 		}
 	}

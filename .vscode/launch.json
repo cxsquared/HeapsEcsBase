@@ -5,25 +5,18 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Launch Chrome against localhost",
-      "url": "file://${workspaceFolder}/index.html",
-      "webRoot": "${workspaceFolder}",
-      "preLaunchTask": {
-        "type": "haxe",
-        "args": "active configuration"
-      }
-    },
-    {
       "type": "hl",
       "request": "launch",
-      "name": "HashLink",
+      "name": "HL debug",
       "cwd": "${workspaceFolder}",
-      "preLaunchTask": {
-        "type": "haxe",
-        "args": "active configuration"
-      }
+      "preLaunchTask": "HaxeActiveConf"
+    },
+    {
+      "name": "Chrome JS debug",
+      "request": "launch",
+      "type": "chrome",
+      "file": "file://${workspaceFolder}/index.html",
+      "preLaunchTask": "HaxeActiveConf"
     }
   ]
 }

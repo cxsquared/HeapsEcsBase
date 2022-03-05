@@ -9,7 +9,6 @@ import h2d.col.Circle;
 class Collidable implements IComponent {
 	public var colliding = false;
 	public var event:CollisionEvent;
-	public var solid:Bool = false;
 	public var debug = false;
 	public var debugColor:Int;
 
@@ -42,19 +41,17 @@ class Collidable implements IComponent {
 		this.debugColor = debugColor;
 	}
 
-	public function log(console:Console, ?color:Null<Int>):Void {
-		console.log('Colliding: $colliding', color);
-		console.log('shape: $shape', color);
-		if (event != null) {
-			console.log('Owner: ${event.owner.id}', color);
-			console.log('Target: ${event.target.id}', color);
-		}
-	}
-
 	public function remove() {}
 
 	public function debugText():String {
-		return '[Collidable] colliding: $colliding';
+		var sb = new StringBuf();
+		sb.add('[Collidable] colliding: $colliding, shape: $shape\n');
+		if (event != null) {
+			sb.add('Owner: ${event.owner.name}');
+			sb.add(', Target: ${event.target.name}');
+		}
+
+		return sb.toString();
 	}
 }
 

@@ -18,8 +18,6 @@ class Shake implements IComponent {
 		this.time = timeInSeconds;
 	}
 
-	public function log(console:Console, ?color:Int) {}
-
 	public function debugText():String {
 		return '[Shake] power $shakePower, time $time, startOffsetX $startOffsetX, startOffsetY $startOffsetY';
 	}

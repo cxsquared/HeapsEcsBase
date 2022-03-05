@@ -42,8 +42,6 @@ class Animation implements IComponent {
 		return current;
 	}
 
-	public function log(console:Console, ?color:Int) {}
-
 	public function debugText():String {
 		return '[Animation] currentAnim: $currentAnim, isDirty: $isDirty';
 	}

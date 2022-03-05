@@ -22,8 +22,6 @@ class Camera implements IComponent {
 		this.zoom = 1;
 	}
 
-	public function log(console:Console, ?color:Int) {}
-
 	public function debugText():String {
 		return '[Camera] target ${target.name}';
 	}

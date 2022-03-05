@@ -1,5 +1,6 @@
 package dialogue;
 
+import h2d.Console;
 import hxyarn.dialogue.Command;
 import hxyarn.dialogue.OptionSet;
 import hxyarn.dialogue.Line;
@@ -17,6 +18,7 @@ import dialogue.event.OptionsShown;
 import dialogue.event.NextLine;
 import dialogue.event.LineShown;
 import dialogue.event.OptionsShown.OptionChoice;
+import dialogue.command.ICommandHandler;
 
 class DialogueManager {
 	var storage = new MemoryVariableStore();
@@ -24,12 +26,15 @@ class DialogueManager {
 	var stringTable:Map<String, StringInfo>;
 	var lastNodeName:String;
 	var runningDialouge:Bool = false;
-
 	var eventBus:EventBus;
+	var console:Console;
+	var commandHandlers = new Map<String, ICommandHandler>();
+	var debug = false;
 
 	public var waitingForOption:Bool = false;
 
-	public function new(eventBus:EventBus) {
+	public function new(eventBus:EventBus, ?console:Console) {
+		this.console = console;
 		this.eventBus = eventBus;
 		dialogue = new Dialogue(storage);
 
@@ -49,8 +54,37 @@ class DialogueManager {
 		});
 	}
 
-	public function setPlayerName(name:String) {
-		storage.setValue("$playerName", name);
+	public function addCommandHandler(handler:ICommandHandler) {
+		if (handler.commandName == null || handler.commandName == "") {
+			logErrorMessage("Command handler has no command name");
+			return;
+		}
+
+		commandHandlers.set(handler.commandName, handler);
+	}
+
+	public function getNodeNames(?includesTag = "") {
+		var nodeNames = [];
+		for (nodeName in dialogue.allNodes) {
+			if (includesTag == "") {
+				nodeNames.push(nodeName);
+				continue;
+			}
+
+			var tags = dialogue.getTagsForNode(nodeName);
+			if (tags.contains(includesTag)) {
+				nodeNames.push(nodeName);
+			}
+		}
+		return nodeNames;
+	}
+
+	public function setVariable(name:String, value:Dynamic) {
+		storage.setValue(name, value);
+	}
+
+	public function getVariable(name:String) {
+		return storage.getValue(name);
 	}
 
 	public function load(texts:Array<String>, names:Array<String>) {
@@ -61,6 +95,7 @@ class DialogueManager {
 		dialogue.addProgram(compiler.program);
 	}
 
+	// TODO: Figure out queueing up nodes to run
 	public function runNode(nodeName:String) {
 		dialogue.setNode(nodeName);
 		dialogue.resume();
@@ -74,9 +109,16 @@ class DialogueManager {
 		dialogue.resume();
 	}
 
-	public function logDebugMessage(message:String):Void {}
+	public function logDebugMessage(message:String):Void {
+		if (console != null && debug) {
+			console.log('[Dialouge] $message');
+		}
+	}
 
-	public function logErrorMessage(message:String):Void {}
+	public function logErrorMessage(message:String):Void {
+		if (console != null)
+			console.log('[Dialouge] $message', 0xFF0000);
+	}
 
 	public function nextLine(event:NextLine) {
 		if (dialogue.isActive())
@@ -104,7 +146,8 @@ class DialogueManager {
 			optionChoices.push({
 				text: text,
 				index: i,
-				enabled: option.enabled
+				enabled: option.enabled,
+				markup: getMarkupForLine(option.line)
 			});
 		}
 
@@ -129,7 +172,16 @@ class DialogueManager {
 		return getMarkupForLine(line).text;
 	}
 
-	public function commandHandler(command:Command) {}
+	public function commandHandler(command:Command) {
+		// TODO normalize to trim whitespaces down to 1 space
+		var parts = command.text.split(' ');
+		var key = parts.shift();
+		if (commandHandlers.exists(key)) {
+			commandHandlers.get(key).handleCommand(parts);
+			resume();
+			return;
+		}
+	}
 
 	public function nodeCompleteHandler(nodeName:String) {
 		lastNodeName = nodeName;

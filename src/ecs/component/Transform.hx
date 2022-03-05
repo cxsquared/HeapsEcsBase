@@ -22,13 +22,6 @@ class Transform implements IComponent {
 		this.rotation = 0;
 	}
 
-	public function log(console:Console, ?color:Null<Int>):Void {
-		console.log('x: $x', color);
-		console.log('y: $y', color);
-		console.log('width: $width', color);
-		console.log('height: $height', color);
-	}
-
 	public function set_x(newX:Float) {
 		cx = Std.int(x / 16); // TODO make this a tile grid var somewhere
 		xr = (newX - cx * 16) / 16;
@@ -45,7 +38,8 @@ class Transform implements IComponent {
 		var sb = new StringBuf();
 		sb.add("[Transform]");
 		sb.add(' x: ${MathUtils.floatToStringPrecision(x, 2)}, y: ${MathUtils.floatToStringPrecision(y, 2)}');
-		sb.add('\ncx: $cx, cy: $cy');
+		sb.add('\ncx: $cx, cy: $cy, rotation: $rotation');
+		sb.add('\nwidth: $width, height: $height');
 		return sb.toString();
 	}
 

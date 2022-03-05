@@ -10,8 +10,6 @@ class Ui implements IComponent {
 		this.drawable = drawable;
 	}
 
-	public function log(console:Console, ?color:Int) {}
-
 	public function debugText():String {
 		return '[Ui]';
 	}
