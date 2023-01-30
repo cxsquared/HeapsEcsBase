@@ -135,17 +135,17 @@ class Game extends hxd.App {
 	}
 
 	function initController() {
-		controller = new Controller(GameAction);
+		controller = Controller.createFromAbstractEnum(GameAction);
 
 		// Controller
-		controller.bindPadLStick(GameAction.MoveX, GameAction.MoveY);
-		controller.bindPadButtonsAsStick(GameAction.MoveX, GameAction.MoveY, DPAD_UP, DPAD_LEFT, DPAD_DOWN, DPAD_RIGHT);
+		controller.bindPadLStickXY(GameAction.MoveX, GameAction.MoveY);
+		controller.bindPadButtonsAsStickXY(GameAction.MoveX, GameAction.MoveY, DPAD_UP, DPAD_LEFT, DPAD_DOWN, DPAD_RIGHT);
 		controller.bindPad(GameAction.Jump, A);
 		controller.bindPad(GameAction.Interact, B);
 
 		// Keyboard
-		controller.bindKeyboardAsStick(MoveX, MoveY, Key.UP, Key.LEFT, Key.DOWN, Key.RIGHT);
-		controller.bindKeyboardAsStick(MoveX, MoveY, Key.W, Key.A, Key.S, Key.D);
+		controller.bindKeyboardAsStickXY(MoveX, MoveY, Key.UP, Key.LEFT, Key.DOWN, Key.RIGHT);
+		controller.bindKeyboardAsStickXY(MoveX, MoveY, Key.W, Key.A, Key.S, Key.D);
 		controller.bindKeyboard(GameAction.Jump, null, [Key.SPACE, Key.Z]);
 		controller.bindKeyboard(GameAction.Interact, null, [Key.E, Key.X]);
 
